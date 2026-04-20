@@ -13,6 +13,7 @@ const defaultConfig = {
   rollerSqm: 0,
   shutterBass: 656,
   shutterPvc: 328,
+  maxPanelWidth: 750,
   buffer: 15,
   fullness: 2.5,
   maxFabricWidth: 2700,

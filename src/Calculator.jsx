@@ -40,6 +40,8 @@ export default function Calculator({ config }) {
   const prices = lines.map(l => calcLine(l, config)).filter(Boolean)
   const totalLow = prices.reduce((s, p) => s + p.low, 0)
   const totalHigh = prices.reduce((s, p) => s + p.high, 0)
+  const totalInstallLow = prices.reduce((s, p) => s + (p.install || 0), 0)
+  const totalInstallHigh = prices.reduce((s, p) => s + (p.installHigh || 0), 0)
   const hasEstimate = prices.length > 0
 
   return (
@@ -62,6 +64,11 @@ export default function Calculator({ config }) {
         <div className={styles.estimate}>
           <div className={styles.estimateLabel}>Estimated range · inc. GST</div>
           <div className={styles.estimateRange}>${fmt(totalLow)} – ${fmt(totalHigh)}</div>
+          {totalInstallLow > 0 && (
+            <div className={styles.estimateInstall}>
+              incl. installation est. ${fmt(totalInstallLow)} – ${fmt(totalInstallHigh)}
+            </div>
+          )}
           <div className={styles.estimateNote}>
             {prices.length} item{prices.length > 1 ? 's' : ''} · ±{Math.round(config.buffer / 2)}% buffer applied
           </div>

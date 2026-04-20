@@ -120,6 +120,7 @@ export default function Admin({ config, onSave }) {
           <h3>Shutters (per m²)</h3>
           <Row label="Basswood ($/m²)" value={local.shutterBass} onChange={v => update('shutterBass', v)} />
           <Row label="PVC ($/m²)" value={local.shutterPvc} onChange={v => update('shutterPvc', v)} />
+          <Row label="Max panel width (mm)" value={local.maxPanelWidth ?? 750} step="1" onChange={v => update('maxPanelWidth', v)} />
         </section>
 
         <section className={styles.section}>

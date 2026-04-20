@@ -36,6 +36,8 @@ export function calcLine(line, config) {
     return {
       low: base * (1 - buf / 2),
       high: base * (1 + buf / 2),
+      install: installCost * (1 - buf / 2),
+      installHigh: installCost * (1 + buf / 2),
       desc: `${heading} · ${fabric}${lining ? ' + lining' : ''} · ${wM.toFixed(2)}m × ${dM.toFixed(2)}m`,
     }
   }
@@ -45,10 +47,13 @@ export function calcLine(line, config) {
     const blindPrice = lookupRollerPrice(line.rollerCategory, w, d, config.rollerGrids)
     if (blindPrice === null) return null
     const motorCost = line.motorised ? (config.motorisation || 200) : 0
-    const base = blindPrice + config.install.roller + motorCost
+    const installCost = config.install.roller
+    const base = blindPrice + installCost + motorCost
     return {
       low: base * (1 - buf / 2),
       high: base * (1 + buf / 2),
+      install: installCost * (1 - buf / 2),
+      installHigh: installCost * (1 + buf / 2),
       desc: `Roller blind · ${line.rollerCategory}${line.motorised ? ' · motorised' : ''} · ${(w/1000).toFixed(2)}m × ${(d/1000).toFixed(2)}m`,
     }
   }
@@ -57,11 +62,16 @@ export function calcLine(line, config) {
     if (!material) return null
     const sqm = (w / 1000) * (d / 1000)
     const rate = material === 'Basswood' ? config.shutterBass : config.shutterPvc
-    const base = sqm * rate + config.install.shutter
+    const panelCount = Math.ceil(w / (config.maxPanelWidth || 750))
+    const shutterCost = sqm * rate
+    const installCost = panelCount * config.install.shutter
+    const base = shutterCost + installCost
     return {
       low: base * (1 - buf / 2),
       high: base * (1 + buf / 2),
-      desc: `${material} shutter · ${sqm.toFixed(2)}m²`,
+      install: installCost * (1 - buf / 2),
+      installHigh: installCost * (1 + buf / 2),
+      desc: `${material} shutter · ${sqm.toFixed(2)}m² · ${panelCount} panel${panelCount > 1 ? 's' : ''}`,
     }
   }
 
@@ -144,13 +154,14 @@ export function calcLineBreakdown(line, config) {
     if (!material) return null
     const sqm = (w / 1000) * (d / 1000)
     const rate = material === 'Basswood' ? config.shutterBass : config.shutterPvc
+    const panelCount = Math.ceil(w / (config.maxPanelWidth || 750))
     const shutterCost = sqm * rate
-    const installCost = config.install.shutter
+    const installCost = panelCount * config.install.shutter
     const base = shutterCost + installCost
     return {
       components: [
         { label: `${material} panels (${sqm.toFixed(2)}m²)`, value: shutterCost },
-        { label: 'Installation', value: installCost },
+        { label: `Installation (${panelCount} panel${panelCount > 1 ? 's' : ''} × $${config.install.shutter})`, value: installCost },
       ],
       base,
       low: base * (1 - buf / 2),
