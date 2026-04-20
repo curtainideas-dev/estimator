@@ -23,11 +23,7 @@
 .catTab.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent-text); font-weight: 600; }
 
 .pasteRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
 .pasteBtn {
@@ -41,17 +37,83 @@
   color: var(--accent-text);
   cursor: pointer;
   transition: all 0.12s;
-  white-space: nowrap;
 }
 .pasteBtn:hover { background: var(--accent); color: #fff; }
 
+.pasteBox {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+.pasteInstructions {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.pasteArea {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-family: monospace;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s;
+  display: block;
+}
+.pasteArea:focus { border-color: var(--accent); }
+
+.pasteActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.applyBtn {
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.applyBtn:hover { background: var(--accent-dark); }
+
+.cancelBtn {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.cancelBtn:hover { background: var(--surface2); }
+
 .pasteSuccess {
+  display: block;
+  margin-top: 8px;
   font-size: 13px;
   color: var(--accent-dark);
   font-weight: 500;
 }
 
 .pasteError {
+  display: block;
+  margin-top: 8px;
   font-size: 13px;
   color: var(--danger);
 }

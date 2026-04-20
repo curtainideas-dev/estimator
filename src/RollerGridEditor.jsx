@@ -2,9 +2,20 @@ import { useState } from 'react'
 import { ROLLER_WIDTHS, ROLLER_DROPS, ROLLER_CATEGORIES } from './rollerGrids'
 import styles from './RollerGridEditor.module.css'
 
+function parseExcelText(text) {
+  const rows = text.trim().split('\n').map(r => r.split('\t'))
+  const firstCell = rows[0][0].trim()
+  const hasHeaderRow = isNaN(parseInt(firstCell))
+  const dataRows = hasHeaderRow ? rows.slice(1) : rows
+  const hasHeaderCol = dataRows.length > 0 && isNaN(parseInt(dataRows[0][0].trim()))
+  return hasHeaderCol ? dataRows.map(r => r.slice(1)) : dataRows
+}
+
 export default function RollerGridEditor({ grids, onChange }) {
   const [activeCategory, setActiveCategory] = useState(ROLLER_CATEGORIES[0])
-  const [pasteStatus, setPasteStatus] = useState(null) // null | 'success' | 'error'
+  const [showPasteBox, setShowPasteBox] = useState(false)
+  const [pasteText, setPasteText] = useState('')
+  const [pasteStatus, setPasteStatus] = useState(null)
   const [pasteMsg, setPasteMsg] = useState('')
 
   function updateCell(rowIdx, colIdx, value) {
@@ -13,46 +24,35 @@ export default function RollerGridEditor({ grids, onChange }) {
     onChange(next)
   }
 
-  async function handlePaste() {
-    setPasteStatus(null)
-    try {
-      const text = await navigator.clipboard.readText()
-      const rows = text.trim().split('\n').map(r => r.split('\t'))
-
-      // Auto-detect if first row/col are headers and strip them
-      // If top-left cell is non-numeric, treat as header row + header col
-      const firstCell = rows[0][0].trim()
-      const hasHeaderRow = isNaN(parseInt(firstCell))
-      const dataRows = hasHeaderRow ? rows.slice(1) : rows
-      const hasHeaderCol = dataRows.length > 0 && isNaN(parseInt(dataRows[0][0].trim()))
-      const dataCols = hasHeaderCol ? dataRows.map(r => r.slice(1)) : dataRows
-
-      if (dataCols.length === 0 || dataCols[0].length === 0) {
-        setPasteStatus('error')
-        setPasteMsg('Nothing to paste — copy your table from Excel first')
-        return
-      }
-
-      if (dataCols.length !== ROLLER_DROPS.length || dataCols[0].length !== ROLLER_WIDTHS.length) {
-        setPasteStatus('error')
-        setPasteMsg(`Expected ${ROLLER_DROPS.length} rows × ${ROLLER_WIDTHS.length} cols of data, got ${dataCols.length} × ${dataCols[0].length}. Make sure you copy only the price cells (not the headers) or include the full table with headers.`)
-        return
-      }
-
-      const newGrid = dataCols.map(row =>
-        row.map(cell => parseInt(cell.trim().replace(/[^0-9]/g, '')) || 0)
-      )
-
-      const next = JSON.parse(JSON.stringify(grids))
-      next[activeCategory] = newGrid
-      onChange(next)
-      setPasteStatus('success')
-      setPasteMsg(`${activeCategory} grid updated from clipboard`)
-      setTimeout(() => setPasteStatus(null), 3000)
-    } catch (e) {
+  function handleApplyPaste() {
+    if (!pasteText.trim()) {
       setPasteStatus('error')
-      setPasteMsg('Could not read clipboard — make sure you\'ve copied your Excel table first')
+      setPasteMsg('Paste your Excel table into the box first')
+      return
     }
+    const dataCols = parseExcelText(pasteText)
+    if (dataCols.length !== ROLLER_DROPS.length || dataCols[0].length !== ROLLER_WIDTHS.length) {
+      setPasteStatus('error')
+      setPasteMsg(`Expected ${ROLLER_DROPS.length} rows × ${ROLLER_WIDTHS.length} cols, got ${dataCols.length} × ${dataCols[0]?.length ?? 0}. Include or exclude headers — both work.`)
+      return
+    }
+    const newGrid = dataCols.map(row =>
+      row.map(cell => parseInt(cell.trim().replace(/[^0-9]/g, '')) || 0)
+    )
+    const next = JSON.parse(JSON.stringify(grids))
+    next[activeCategory] = newGrid
+    onChange(next)
+    setPasteStatus('success')
+    setPasteMsg(`${activeCategory} updated — hit Save changes to persist`)
+    setPasteText('')
+    setShowPasteBox(false)
+    setTimeout(() => setPasteStatus(null), 4000)
+  }
+
+  function handleCancel() {
+    setShowPasteBox(false)
+    setPasteText('')
+    setPasteStatus(null)
   }
 
   const grid = grids[activeCategory] || []
@@ -70,9 +70,29 @@ export default function RollerGridEditor({ grids, onChange }) {
       </div>
 
       <div className={styles.pasteRow}>
-        <button className={styles.pasteBtn} onClick={handlePaste}>
-          ⊕ Paste from Excel
-        </button>
+        {!showPasteBox ? (
+          <button className={styles.pasteBtn} onClick={() => { setShowPasteBox(true); setPasteStatus(null) }}>
+            ⊕ Paste from Excel
+          </button>
+        ) : (
+          <div className={styles.pasteBox}>
+            <p className={styles.pasteInstructions}>
+              Copy your table in Excel (<strong>Ctrl+C</strong>), click in the box below, then paste (<strong>Ctrl+V</strong>). Headers optional.
+            </p>
+            <textarea
+              className={styles.pasteArea}
+              value={pasteText}
+              onChange={e => setPasteText(e.target.value)}
+              placeholder="Paste Excel data here…"
+              rows={5}
+              autoFocus
+            />
+            <div className={styles.pasteActions}>
+              <button className={styles.applyBtn} onClick={handleApplyPaste}>Apply</button>
+              <button className={styles.cancelBtn} onClick={handleCancel}>Cancel</button>
+            </div>
+          </div>
+        )}
         {pasteStatus && (
           <span className={pasteStatus === 'success' ? styles.pasteSuccess : styles.pasteError}>
             {pasteMsg}
@@ -109,9 +129,7 @@ export default function RollerGridEditor({ grids, onChange }) {
           </tbody>
         </table>
       </div>
-      <p className={styles.hint}>
-        To bulk update: select and copy the table in Excel (with or without headers), select the category above, then click "Paste from Excel". Hit Save changes when done.
-      </p>
+      <p className={styles.hint}>Prices inc. GST. Hit Save changes after updating.</p>
     </div>
   )
 }
