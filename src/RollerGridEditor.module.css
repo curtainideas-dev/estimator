@@ -22,6 +22,40 @@
 .catTab:hover { border-color: var(--accent); color: var(--accent-dark); }
 .catTab.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent-text); font-weight: 600; }
 
+.pasteRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.pasteBtn {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--accent-light);
+  color: var(--accent-text);
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.pasteBtn:hover { background: var(--accent); color: #fff; }
+
+.pasteSuccess {
+  font-size: 13px;
+  color: var(--accent-dark);
+  font-weight: 500;
+}
+
+.pasteError {
+  font-size: 13px;
+  color: var(--danger);
+}
+
 .tableWrap {
   overflow-x: auto;
   border: 1px solid var(--border);
