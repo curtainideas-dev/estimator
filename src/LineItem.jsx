@@ -14,6 +14,7 @@ export default function LineItem({ line, index, config, onChange, onRemove, onDu
       updated.fabric = ''
       updated.material = ''
       updated.lining = false
+      updated.noHem = false
       updated.rollerCategory = ''
       updated.motorised = false
     }
@@ -82,6 +83,15 @@ export default function LineItem({ line, index, config, onChange, onRemove, onDu
               onChange={e => set('lining', e.target.checked)}
             />
             <label htmlFor={`lining-${line.id}`}>Add lining</label>
+          </div>
+          <div className={styles.checkRow}>
+            <input
+              type="checkbox"
+              id={`nohem-${line.id}`}
+              checked={!!line.noHem}
+              onChange={e => set('noHem', e.target.checked)}
+            />
+            <label htmlFor={`nohem-${line.id}`}>Remove bottom hem (−${config.hemReduction || 0}/lm)</label>
           </div>
         </>
       )}

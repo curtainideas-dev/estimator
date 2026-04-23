@@ -80,8 +80,9 @@ export default function Admin({ config, onSave }) {
 
         <section className={styles.section}>
           <h3>Make &amp; lining</h3>
-          <Row label="Make cost ($/m of fabric)" value={local.make} onChange={v => update('make', v)} />
-          <Row label="Lining cost ($/m of fabric)" value={local.lining} onChange={v => update('lining', v)} />
+          <Row label="Make cost ($/lm)" value={local.make} onChange={v => update('make', v)} />
+          <Row label="Lining cost ($/lm)" value={local.lining} onChange={v => update('lining', v)} />
+          <Row label="No bottom hem reduction ($/lm)" value={local.hemReduction ?? 5} onChange={v => update('hemReduction', v)} />
         </section>
 
         <section className={styles.section}>

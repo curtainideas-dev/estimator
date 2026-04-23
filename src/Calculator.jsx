@@ -5,7 +5,7 @@ import styles from './Calculator.module.css'
 
 let nextId = 1
 function emptyLine() {
-  return { id: nextId++, name: '', type: '', heading: '', fabric: '', lining: false, material: '', rollerCategory: '', motorised: false, width: '', drop: '' }
+  return { id: nextId++, name: '', type: '', heading: '', fabric: '', lining: false, noHem: false, material: '', rollerCategory: '', motorised: false, width: '', drop: '' }
 }
 
 export default function Calculator({ config }) {

@@ -27,12 +27,13 @@ export function calcLine(line, config) {
     const fabMid = (fab.min + fab.max) / 2
     const fabCost = usage * fabMid
     const makeCost = usage * config.make
+    const hemSaving = line.noHem ? usage * (config.hemReduction || 0) : 0
     const liningCost = lining ? usage * config.lining : 0
     const trackCfg = heading === 'Wavefold' ? config.wavefold : config.pinch
     const trackW = Math.max(w, trackCfg.min)
     const trackCost = trackCfg.fixed + (trackW > trackCfg.min ? (trackW - trackCfg.min) * trackCfg.perMm : 0)
     const installCost = type === 'Sheer' ? config.install.sheer : config.install.drape
-    const base = fabCost + makeCost + liningCost + trackCost + installCost
+    const base = fabCost + makeCost - hemSaving + liningCost + trackCost + installCost
     return {
       low: base * (1 - buf / 2),
       high: base * (1 + buf / 2),
@@ -111,16 +112,18 @@ export function calcLineBreakdown(line, config) {
     const fabMid = (fab.min + fab.max) / 2
     const fabCost = usage * fabMid
     const makeCost = usage * config.make
+    const hemSaving = line.noHem ? usage * (config.hemReduction || 0) : 0
     const liningCost = lining ? usage * config.lining : 0
     const trackCfg = heading === 'Wavefold' ? config.wavefold : config.pinch
     const trackW = Math.max(w, trackCfg.min)
     const trackCost = trackCfg.fixed + (trackW > trackCfg.min ? (trackW - trackCfg.min) * trackCfg.perMm : 0)
     const installCost = type === 'Sheer' ? config.install.sheer : config.install.drape
-    const base = fabCost + makeCost + liningCost + trackCost + installCost
+    const base = fabCost + makeCost - hemSaving + liningCost + trackCost + installCost
     return {
       components: [
         { label: `Fabric (${fabric}, ${usageDesc} @ $${fabMid}/lm)`, value: fabCost },
         { label: `Make cost (${usageDesc})`, value: makeCost },
+        ...(hemSaving > 0 ? [{ label: `No bottom hem saving (${usageDesc})`, value: -hemSaving }] : []),
         ...(lining ? [{ label: `Lining (${usageDesc})`, value: liningCost }] : []),
         { label: `${heading} track (${(trackW / 1000).toFixed(2)}m)`, value: trackCost },
         { label: 'Installation', value: installCost },

@@ -8,7 +8,7 @@ const HEADINGS = ['Wavefold', 'Pinch pleat']
 const MATERIALS = ['Basswood', 'PVC']
 
 function emptyLine() {
-  return { type: '', heading: '', fabric: '', lining: false, material: '', rollerCategory: '', motorised: false, width: '', drop: '' }
+  return { type: '', heading: '', fabric: '', lining: false, noHem: false, material: '', rollerCategory: '', motorised: false, width: '', drop: '' }
 }
 
 export default function PricingCheck({ config }) {
@@ -22,6 +22,7 @@ export default function PricingCheck({ config }) {
         updated.fabric = ''
         updated.material = ''
         updated.lining = false
+        updated.noHem = false
         updated.rollerCategory = ''
         updated.motorised = false
       }
@@ -84,6 +85,15 @@ export default function PricingCheck({ config }) {
                 onChange={e => set('lining', e.target.checked)}
               />
               <label htmlFor="pc-lining">Add lining (+${config.lining}/m)</label>
+            </div>
+            <div className={styles.checkRow}>
+              <input
+                type="checkbox"
+                id="pc-nohem"
+                checked={!!line.noHem}
+                onChange={e => set('noHem', e.target.checked)}
+              />
+              <label htmlFor="pc-nohem">Remove bottom hem (−${config.hemReduction || 0}/lm)</label>
             </div>
           </>
         )}

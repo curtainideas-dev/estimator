@@ -7,6 +7,7 @@ const defaultConfig = {
   ],
   make: 45,
   lining: 20,
+  hemReduction: 5,
   install: { sheer: 75, drape: 94, shutter: 109, roller: 37 },
   wavefold: { fixed: 284, perMm: 0.096667, min: 900 },
   pinch: { fixed: 84, perMm: 0.043333, min: 900 },
