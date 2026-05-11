@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import LineItem from './LineItem'
 import { calcLine, fmt } from './pricing'
+import { exportEstimate } from './exportEstimate'
 import styles from './Calculator.module.css'
 
 let nextId = 1
@@ -64,11 +65,7 @@ export default function Calculator({ config }) {
         <div className={styles.estimate}>
           <div className={styles.estimateLabel}>Estimated range · inc. GST</div>
           <div className={styles.estimateRange}>${fmt(totalLow)} – ${fmt(totalHigh)}</div>
-          {totalInstallLow > 0 && (
-            <div className={styles.estimateInstall}>
-              incl. installation est. ${fmt(totalInstallLow)} – ${fmt(totalInstallHigh)}
-            </div>
-          )}
+          
           <div className={styles.estimateNote}>
             {prices.length} item{prices.length > 1 ? 's' : ''} · ±{Math.round(config.buffer / 2)}% buffer applied
           </div>
@@ -77,6 +74,12 @@ export default function Calculator({ config }) {
 
       <div className={styles.actions}>
         <button className={styles.clearBtn} onClick={clearAll}>Clear all</button>
+        {hasEstimate && (
+          <button
+            className={styles.downloadBtn}
+            onClick={() => exportEstimate(lines, lines.map(l => calcLine(l, config)), config)}
+          >↓ Download estimate</button>
+        )}
       </div>
     </div>
   )

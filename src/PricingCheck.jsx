@@ -11,6 +11,13 @@ function emptyLine() {
   return { type: '', heading: '', fabric: '', lining: false, noHem: false, material: '', rollerCategory: '', motorised: false, width: '', drop: '' }
 }
 
+const FABRIC_COLOURS = {
+  Standard: { bg: '#e8f0fd', text: '#1a3d6b', border: '#4a7dd9' },
+  Plus:     { bg: '#e8f5e9', text: '#1a5c2a', border: '#4caf50' },
+  Premium:  { bg: '#fdf8e1', text: '#6b5a1a', border: '#f5c842' },
+  Luxury:   { bg: '#fdecea', text: '#6b1a1a', border: '#e53935' },
+}
+
 export default function PricingCheck({ config }) {
   const [line, setLine] = useState(emptyLine())
 
@@ -65,16 +72,27 @@ export default function PricingCheck({ config }) {
 
             <div className={styles.label}>Fabric category</div>
             <div className={`${styles.optGroup} ${styles.cols4}`}>
-              {config.fabrics.map(f => (
-                <button
-                  key={f.name}
-                  className={`${styles.optBtn} ${line.fabric === f.name ? styles.selected : ''}`}
-                  onClick={() => set('fabric', f.name)}
-                >
-                  {f.name}
-                  <span className={styles.optSub}>${f.min}–${f.max}/m</span>
-                </button>
-              ))}
+              {config.fabrics.map(f => {
+                const c = FABRIC_COLOURS[f.name] || {}
+                const isSelected = line.fabric === f.name
+                return (
+                  <button
+                    key={f.name}
+                    className={styles.optBtn}
+                    style={{
+                      borderColor: c.border,
+                      color: c.text,
+                      background: isSelected ? c.bg : '#fff',
+                      fontWeight: isSelected ? 600 : 400,
+                      opacity: isSelected ? 1 : 0.7,
+                    }}
+                    onClick={() => set('fabric', f.name)}
+                  >
+                    {f.name}
+                    <span className={styles.optSub}>${f.min}–${f.max}/m</span>
+                  </button>
+                )
+              })}
             </div>
 
             <div className={styles.checkRow}>

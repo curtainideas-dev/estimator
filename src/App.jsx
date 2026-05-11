@@ -3,6 +3,8 @@ import Login from './Login'
 import Calculator from './Calculator'
 import Admin from './Admin'
 import PricingCheck from './PricingCheck'
+import Fabrics from './Fabrics'
+import FabricUpload from './FabricUpload'
 import { loadConfig } from './supabase'
 import defaultConfig from './defaultConfig'
 import { ROLLER_GRIDS } from './rollerGrids'
@@ -13,6 +15,8 @@ export default function App() {
   const [tab, setTab] = useState('calc')
   const [config, setConfig] = useState(defaultConfig)
   const [loading, setLoading] = useState(true)
+  const [showUpload, setShowUpload] = useState(false)
+  const [fabricKey, setFabricKey] = useState(0)
 
   useEffect(() => {
     if (role) {
@@ -31,6 +35,7 @@ export default function App() {
 
   const tabs = [
     { id: 'calc', label: 'Calculator' },
+    { id: 'fabrics', label: 'Fabrics' },
     ...(isAdmin ? [
       { id: 'pricing', label: 'Pricing check' },
       { id: 'admin', label: 'Admin' },
@@ -60,12 +65,25 @@ export default function App() {
           <div className={styles.loading}>Loading…</div>
         ) : tab === 'calc' ? (
           <Calculator config={config} />
+        ) : tab === 'fabrics' ? (
+          <Fabrics
+            key={fabricKey}
+            isAdmin={isAdmin}
+            onUpload={() => setShowUpload(true)}
+          />
         ) : tab === 'pricing' ? (
           <PricingCheck config={config} />
         ) : (
           <Admin config={config} onSave={setConfig} />
         )}
       </main>
+
+      {showUpload && (
+        <FabricUpload
+          onClose={() => setShowUpload(false)}
+          onDone={() => setFabricKey(k => k + 1)}
+        />
+      )}
     </div>
   )
 }

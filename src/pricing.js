@@ -80,7 +80,7 @@ export function calcLine(line, config) {
 }
 
 export function fmt(n) {
-  return Math.round(n).toLocaleString('en-AU')
+  return (Math.ceil(n / 100) * 100).toLocaleString('en-AU')
 }
 
 export function calcLineBreakdown(line, config) {
