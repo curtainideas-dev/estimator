@@ -29,7 +29,10 @@ export function calcLine(line, config) {
     const makeCost = usage * config.make
     const hemSaving = line.noHem ? usage * (config.hemReduction || 0) : 0
     const liningCost = lining ? usage * config.lining : 0
-    const trackCfg = heading === 'Wavefold' ? config.wavefold : config.pinch
+    const trackGrade = line.trackGrade || 'Premium'
+    const trackCfg = heading === 'Wavefold'
+      ? (trackGrade === 'Standard' ? config.wavefoldStandard : config.wavefold)
+      : (trackGrade === 'Standard' ? config.pinchStandard : config.pinch)
     const trackW = Math.max(w, trackCfg.min)
     const trackCost = trackCfg.fixed + (trackW > trackCfg.min ? (trackW - trackCfg.min) * trackCfg.perMm : 0)
     const installCost = type === 'Sheer' ? config.install.sheer : config.install.drape
@@ -114,7 +117,10 @@ export function calcLineBreakdown(line, config) {
     const makeCost = usage * config.make
     const hemSaving = line.noHem ? usage * (config.hemReduction || 0) : 0
     const liningCost = lining ? usage * config.lining : 0
-    const trackCfg = heading === 'Wavefold' ? config.wavefold : config.pinch
+    const trackGrade = line.trackGrade || 'Premium'
+    const trackCfg = heading === 'Wavefold'
+      ? (trackGrade === 'Standard' ? config.wavefoldStandard : config.wavefold)
+      : (trackGrade === 'Standard' ? config.pinchStandard : config.pinch)
     const trackW = Math.max(w, trackCfg.min)
     const trackCost = trackCfg.fixed + (trackW > trackCfg.min ? (trackW - trackCfg.min) * trackCfg.perMm : 0)
     const installCost = type === 'Sheer' ? config.install.sheer : config.install.drape

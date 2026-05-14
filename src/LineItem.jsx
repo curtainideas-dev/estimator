@@ -22,8 +22,12 @@ export default function LineItem({ line, index, config, onChange, onRemove, onDu
       updated.material = ''
       updated.lining = false
       updated.noHem = false
+      updated.trackGrade = ''
       updated.rollerCategory = ''
       updated.motorised = false
+    }
+    if (key === 'heading') {
+      updated.trackGrade = ''
     }
     onChange(updated)
   }
@@ -70,6 +74,21 @@ export default function LineItem({ line, index, config, onChange, onRemove, onDu
               >{h}</button>
             ))}
           </div>
+
+          {line.heading && (
+            <>
+              <div className={styles.label}>Track grade</div>
+              <div className={`${styles.optGroup} ${styles.cols2}`}>
+                {['Standard', 'Premium'].map(g => (
+                  <button
+                    key={g}
+                    className={`${styles.optBtn} ${line.trackGrade === g ? styles.selected : ''}`}
+                    onClick={() => set('trackGrade', g)}
+                  >{g}</button>
+                ))}
+              </div>
+            </>
+          )}
 
           <div className={styles.label}>Fabric category</div>
           <div className={`${styles.optGroup} ${styles.cols4}`}>
