@@ -134,6 +134,7 @@ export default function Admin({ config, onSave }) {
           <Row label="Basswood ($/m²)" value={local.shutterBass} onChange={v => update('shutterBass', v)} />
           <Row label="PVC ($/m²)" value={local.shutterPvc} onChange={v => update('shutterPvc', v)} />
           <Row label="Max panel width (mm)" value={local.maxPanelWidth ?? 750} step="1" onChange={v => update('maxPanelWidth', v)} />
+          <Row label="Check measure (flat fee $)" value={local.checkMeasure ?? 100} step="1" onChange={v => update('checkMeasure', v)} />
         </section>
 
         <section className={styles.section}>

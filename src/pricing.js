@@ -69,7 +69,8 @@ export function calcLine(line, config) {
     const panelCount = Math.ceil(w / (config.maxPanelWidth || 750))
     const shutterCost = sqm * rate
     const installCost = panelCount * config.install.shutter
-    const base = shutterCost + installCost
+    const checkMeasure = config.checkMeasure || 0
+    const base = shutterCost + installCost + checkMeasure
     return {
       low: base * (1 - buf / 2),
       high: base * (1 + buf / 2),
@@ -166,11 +167,13 @@ export function calcLineBreakdown(line, config) {
     const panelCount = Math.ceil(w / (config.maxPanelWidth || 750))
     const shutterCost = sqm * rate
     const installCost = panelCount * config.install.shutter
-    const base = shutterCost + installCost
+    const checkMeasure = config.checkMeasure || 0
+    const base = shutterCost + installCost + checkMeasure
     return {
       components: [
         { label: `${material} panels (${sqm.toFixed(2)}m²)`, value: shutterCost },
         { label: `Installation (${panelCount} panel${panelCount > 1 ? 's' : ''} × $${config.install.shutter})`, value: installCost },
+        { label: 'Check measure (flat fee)', value: checkMeasure },
       ],
       base,
       low: base * (1 - buf / 2),

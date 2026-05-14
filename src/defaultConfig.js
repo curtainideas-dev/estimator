@@ -17,6 +17,7 @@ const defaultConfig = {
   shutterBass: 656,
   shutterPvc: 328,
   maxPanelWidth: 750,
+  checkMeasure: 100,
   buffer: 15,
   fullness: 2.5,
   maxFabricWidth: 2700,

@@ -169,6 +169,9 @@ export default function LineItem({ line, index, config, onChange, onRemove, onDu
               >{m}</button>
             ))}
           </div>
+          <div className={styles.checkMeasureNote}>
+            Includes check measure fee (${config.checkMeasure || 0} flat)
+          </div>
         </>
       )}
 

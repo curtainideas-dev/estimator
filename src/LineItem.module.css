@@ -144,3 +144,10 @@
   .cols4 { grid-template-columns: 1fr 1fr; }
   .fieldGroup { grid-template-columns: 1fr; }
 }
+
+.checkMeasureNote {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+  font-style: italic;
+}
