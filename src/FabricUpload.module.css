@@ -125,3 +125,29 @@
   cursor: pointer;
 }
 .retryBtn:hover { background: var(--surface2); }
+
+.reminderCheck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-top: 4px;
+}
+.reminderCheck input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+
+.confirmBtn {
+  padding: 9px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 4px;
+}
+.confirmBtn:hover { background: var(--accent-dark); }

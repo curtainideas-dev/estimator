@@ -1,0 +1,40 @@
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 1.25rem;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ok { background: var(--accent-light); color: var(--accent-text); }
+.dueSoon { background: #fdf8e1; color: #6b5a1a; }
+.overdue { background: #fdecea; color: #6b1a1a; }
+
+.icon { font-size: 13px; flex-shrink: 0; }
+
+.text { flex: 1; line-height: 1.4; }
+
+.badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  background: #e53935;
+  color: #fff;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.badgeSoon {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  background: #f5c842;
+  color: #6b5a1a;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  vertical-align: middle;
+}

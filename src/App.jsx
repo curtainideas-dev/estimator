@@ -5,6 +5,7 @@ import Admin from './Admin'
 import PricingCheck from './PricingCheck'
 import Fabrics from './Fabrics'
 import FabricUpload from './FabricUpload'
+import FabricReminderBanner from './FabricReminderBanner'
 import { loadConfig } from './supabase'
 import defaultConfig from './defaultConfig'
 import { ROLLER_GRIDS } from './rollerGrids'
@@ -59,6 +60,8 @@ export default function App() {
           >{t.label}</button>
         ))}
       </nav>
+
+      <FabricReminderBanner />
 
       <main className={styles.main}>
         {loading ? (
