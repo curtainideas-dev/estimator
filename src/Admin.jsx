@@ -96,7 +96,7 @@ export default function Admin({ config, onSave }) {
         <section className={styles.section}>
           <h3>Track pricing</h3>
 
-          <div className={styles.subLabel}>Wavefold — Premium</div>
+          <div className={styles.subLabel}>Wavefold — Motorised</div>
           <Row label="Fixed ($)" value={local.wavefold?.fixed} onChange={v => update('wavefold.fixed', v)} />
           <Row label="Per mm ($/mm)" value={local.wavefold?.perMm} step="0.000001" onChange={v => update('wavefold.perMm', v)} />
           <Row label="Min width (mm)" value={local.wavefold?.min} onChange={v => update('wavefold.min', v)} />
@@ -106,7 +106,7 @@ export default function Admin({ config, onSave }) {
           <Row label="Per mm ($/mm)" value={local.wavefoldStandard?.perMm ?? 0.06} step="0.000001" onChange={v => update('wavefoldStandard.perMm', v)} />
           <Row label="Min width (mm)" value={local.wavefoldStandard?.min ?? 900} onChange={v => update('wavefoldStandard.min', v)} />
 
-          <div className={styles.subLabel}>Pinch pleat — Premium</div>
+          <div className={styles.subLabel}>Pinch pleat — Motorised</div>
           <Row label="Fixed ($)" value={local.pinch?.fixed} onChange={v => update('pinch.fixed', v)} />
           <Row label="Per mm ($/mm)" value={local.pinch?.perMm} step="0.000001" onChange={v => update('pinch.perMm', v)} />
           <Row label="Min width (mm)" value={local.pinch?.min} onChange={v => update('pinch.min', v)} />

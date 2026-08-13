@@ -29,7 +29,7 @@ export function calcLine(line, config) {
     const makeCost = usage * config.make
     const hemSaving = line.noHem ? usage * (config.hemReduction || 0) : 0
     const liningCost = lining ? usage * config.lining : 0
-    const trackGrade = line.trackGrade || 'Premium'
+    const trackGrade = line.trackGrade || 'Motorised'
     const trackCfg = heading === 'Wavefold'
       ? (trackGrade === 'Standard' ? config.wavefoldStandard : config.wavefold)
       : (trackGrade === 'Standard' ? config.pinchStandard : config.pinch)
@@ -118,7 +118,7 @@ export function calcLineBreakdown(line, config) {
     const makeCost = usage * config.make
     const hemSaving = line.noHem ? usage * (config.hemReduction || 0) : 0
     const liningCost = lining ? usage * config.lining : 0
-    const trackGrade = line.trackGrade || 'Premium'
+    const trackGrade = line.trackGrade || 'Motorised'
     const trackCfg = heading === 'Wavefold'
       ? (trackGrade === 'Standard' ? config.wavefoldStandard : config.wavefold)
       : (trackGrade === 'Standard' ? config.pinchStandard : config.pinch)

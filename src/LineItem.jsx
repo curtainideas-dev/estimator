@@ -79,7 +79,7 @@ export default function LineItem({ line, index, config, onChange, onRemove, onDu
             <>
               <div className={styles.label}>Track grade</div>
               <div className={`${styles.optGroup} ${styles.cols2}`}>
-                {['Standard', 'Premium'].map(g => (
+                {['Standard', 'Motorised'].map(g => (
                   <button
                     key={g}
                     className={`${styles.optBtn} ${line.trackGrade === g ? styles.selected : ''}`}
